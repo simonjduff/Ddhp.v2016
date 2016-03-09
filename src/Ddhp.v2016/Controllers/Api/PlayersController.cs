@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Ddhp.v2016.Models;
 using Microsoft.AspNet.Mvc;
@@ -20,7 +18,14 @@ namespace Ddhp.v2016.Controllers.Api
         [HttpGet]
         public IEnumerable<Player> GetAll()
         {
-            return _context.Players;
+            return _context.Players.OrderBy(q => q.Id);
+        }
+
+        [HttpGet]
+        [Route("{id:int}")]
+        public Player Get(int id)
+        {
+            return _context.Players.SingleOrDefault(q => q.Id.Equals(id));
         }
     }
 }
