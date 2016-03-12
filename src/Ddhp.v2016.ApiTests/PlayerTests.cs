@@ -5,13 +5,10 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Ddhp.v2016.Models;
-using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNet.TestHost;
 using Microsoft.Data.Entity;
-using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using NSubstitute;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -19,29 +16,18 @@ namespace Ddhp.v2016.ApiTests
 {
     // This project can output the Class library as a NuGet Package.
     // To enable this option, right-click on the project and select the Properties menu item. In the Build tab select "Produce outputs on build".
-    public class PlayerTests : IDisposable
+    public class PlayerTests : InMemoryTestsBase
     {
         private readonly ITestOutputHelper _output;
-        private HttpClient _client;
-        private DdhpContext _ddhpContext;
+        
 
         public PlayerTests(ITestOutputHelper output)
         {
             _output = output;
 
-            var optionsBuilder = new DbContextOptionsBuilder<DdhpContext>();
-            optionsBuilder.UseInMemoryDatabase();
-            _ddhpContext = new DdhpContext(optionsBuilder.Options);
-
-            _ddhpContext.Players.Add(new Player { FirstName = "First1", LastName = "Second1" });
-            _ddhpContext.Players.Add(new Player { FirstName = "First2", LastName = "Second2" });
-            _ddhpContext.SaveChanges();
-
-            var webHostBuilder = TestServer.CreateBuilder()
-                .UseStartup<Startup>()
-                .UseServices(q => q.Add(new ServiceDescriptor(typeof(IDdhpContext), _ddhpContext)));
-            var server = new TestServer(webHostBuilder);
-            _client = server.CreateClient();
+            DdhpContext.Players.Add(new Player { FirstName = "First1", LastName = "Second1" });
+            DdhpContext.Players.Add(new Player { FirstName = "First2", LastName = "Second2" });
+            DdhpContext.SaveChanges();
         }
 
         [Fact]
@@ -78,11 +64,6 @@ namespace Ddhp.v2016.ApiTests
 
             Assert.Equal("First1", player.FirstName);
             Assert.Equal("Second1", player.LastName);
-        }
-
-        public void Dispose()
-        {
-            _ddhpContext.Database.EnsureDeleted();
         }
     }
 }
