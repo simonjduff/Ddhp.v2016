@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Ddhp.v2016.Models;
-using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
 
