@@ -10,7 +10,7 @@ namespace Ddhp.v2016.ApiTests
     public class InMemoryTestsBase : IDisposable
     {
         protected readonly DdhpContext DdhpContext;
-        protected readonly HttpClient _client;
+        protected readonly HttpClient Client;
 
         public InMemoryTestsBase()
         {
@@ -22,7 +22,7 @@ namespace Ddhp.v2016.ApiTests
                 .UseStartup<Startup>()
                 .UseServices(q => q.Add(new ServiceDescriptor(typeof(IDdhpContext), DdhpContext)));
             var server = new TestServer(webHostBuilder);
-            _client = server.CreateClient();
+            Client = server.CreateClient();
         }
 
         public void Dispose()

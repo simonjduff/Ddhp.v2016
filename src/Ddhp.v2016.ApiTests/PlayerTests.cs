@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Ddhp.v2016.Models;
-using Microsoft.AspNet.TestHost;
-using Microsoft.Data.Entity;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
@@ -33,12 +27,10 @@ namespace Ddhp.v2016.ApiTests
         [Fact]
         public async Task GetPlayers()
         {
-            var response = await _client.GetAsync("/api/players");
+            var response = await Client.GetAsync("/api/players");
             response.EnsureSuccessStatusCode();
 
-            var responseString = await response.Content.ReadAsStringAsync();
-
-            var results = (IEnumerable<Player>)JsonConvert.DeserializeObject(responseString, typeof (IEnumerable<Player>));
+            var results = await response.DeserializeJson<IEnumerable<Player>>();
 
             foreach (var result in results)
             {
@@ -55,12 +47,10 @@ namespace Ddhp.v2016.ApiTests
         [Fact]
         public async Task GetPlayerById()
         {
-            var response = await _client.GetAsync("/api/players/1");
+            var response = await Client.GetAsync("/api/players/1");
             response.EnsureSuccessStatusCode();
 
-            var responseString = await response.Content.ReadAsStringAsync();
-
-            var player = (Player)JsonConvert.DeserializeObject(responseString, typeof(Player));
+            var player = await response.DeserializeJson<Player>();
 
             Assert.Equal("First1", player.FirstName);
             Assert.Equal("Second1", player.LastName);
