@@ -9,6 +9,7 @@ namespace Ddhp.v2016.ApiTests
 {
     // This project can output the Class library as a NuGet Package.
     // To enable this option, right-click on the project and select the Properties menu item. In the Build tab select "Produce outputs on build".
+    [Collection("InMemory")]
     public class PlayerTests : InMemoryTestsBase
     {
         private readonly ITestOutputHelper _output;
@@ -18,8 +19,8 @@ namespace Ddhp.v2016.ApiTests
         {
             _output = output;
 
-            DdhpContext.Players.Add(new Player { FirstName = "First1", LastName = "Second1" });
-            DdhpContext.Players.Add(new Player { FirstName = "First2", LastName = "Second2" });
+            DdhpContext.Players.Add(new Player {Id = 1, FirstName = "First1", LastName = "Second1" });
+            DdhpContext.Players.Add(new Player { Id = 2, FirstName = "First2", LastName = "Second2" });
             DdhpContext.SaveChanges();
         }
 

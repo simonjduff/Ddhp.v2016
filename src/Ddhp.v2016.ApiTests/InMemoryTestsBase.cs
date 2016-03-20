@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using Ddhp.v2016.Models;
 using Ddhp.v2016.Models.Ddhp;
@@ -14,7 +15,8 @@ namespace Ddhp.v2016.ApiTests
     {
         private readonly DdhpContext _ddhpContext;
         protected readonly HttpClient Client;
-        private bool _testDataRun;
+        private static bool _testDataRun;
+        private static readonly object Lock = new object();
 
         protected DdhpContext DdhpContext
         {
@@ -22,8 +24,14 @@ namespace Ddhp.v2016.ApiTests
             {
                 if (!_testDataRun)
                 {
-                    GivenTheTestData();
-                    _testDataRun = true;
+                    lock (Lock)
+                    {
+                        if (!_testDataRun)
+                        {
+                            GivenTheTestData();
+                            _testDataRun = true;
+                        }
+                    }
                 }
 
                 return _ddhpContext;
@@ -38,7 +46,7 @@ namespace Ddhp.v2016.ApiTests
 
             var webHostBuilder = TestServer.CreateBuilder()
                 .UseStartup<Startup>()
-                .UseServices(q => q.Add(new ServiceDescriptor(typeof(IDdhpContext), DdhpContext)));
+                .UseServices(q => q.Add(new ServiceDescriptor(typeof(IDdhpContext), _ddhpContext)));
             var server = new TestServer(webHostBuilder);
             Client = server.CreateClient();
         }
@@ -50,9 +58,11 @@ namespace Ddhp.v2016.ApiTests
 
         public virtual void GivenTheTestData()
         {
+            if (_ddhpContext.DdhpClubs.Any()) { throw new ApplicationException("It's all gone wrong");}
+
             var clubs = JsonConvert.DeserializeObject<Club[]>(File.ReadAllText(@"Data\clubs.json"));
-            DdhpContext.DdhpClubs.AddRange(clubs);
-            DdhpContext.SaveChanges();
+            _ddhpContext.DdhpClubs.AddRange(clubs);
+            _ddhpContext.SaveChanges();
         }
     }
 }
