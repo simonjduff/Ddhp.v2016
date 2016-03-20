@@ -25,6 +25,7 @@ namespace Ddhp.v2016.ApiTests
         public void AveragesAreCorrect()
         {
             Assert.Equal(3, DdhpContext.Stats.Count());
+            Assert.Equal(12, DdhpContext.DdhpClubs.Count());
         }
     }
 }
