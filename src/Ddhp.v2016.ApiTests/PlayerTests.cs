@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ddhp.v2016.ApiTests.DataSources;
 using Ddhp.v2016.Models;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -13,15 +15,20 @@ namespace Ddhp.v2016.ApiTests
     public class PlayerTests : InMemoryTestsBase
     {
         private readonly ITestOutputHelper _output;
-        
+        private readonly DdhpContext _ddhpContext = new InMemoryContext();
+
+        protected override void ServicesToRegister(IServiceCollection collection)
+        {
+            collection.Add(new ServiceDescriptor(typeof (IDdhpContext), _ddhpContext));
+        }
 
         public PlayerTests(ITestOutputHelper output)
         {
             _output = output;
 
-            DdhpContext.Players.Add(new Player {Id = 1, FirstName = "First1", LastName = "Second1" });
-            DdhpContext.Players.Add(new Player { Id = 2, FirstName = "First2", LastName = "Second2" });
-            DdhpContext.SaveChanges();
+            _ddhpContext.Players.Add(new Player {Id = 1, FirstName = "First1", LastName = "Second1" });
+            _ddhpContext.Players.Add(new Player { Id = 2, FirstName = "First2", LastName = "Second2" });
+            _ddhpContext.SaveChanges();
         }
 
         [Fact]
@@ -30,7 +37,8 @@ namespace Ddhp.v2016.ApiTests
             var response = await Client.GetAsync("/api/players");
             response.EnsureSuccessStatusCode();
 
-            var results = await response.DeserializeJson<IEnumerable<Player>>();
+            var resultsAsync = await response.DeserializeJson<IEnumerable<Player>>();
+            var results = resultsAsync.ToList();
 
             foreach (var result in results)
             {
@@ -54,6 +62,12 @@ namespace Ddhp.v2016.ApiTests
 
             Assert.Equal("First1", player.FirstName);
             Assert.Equal("Second1", player.LastName);
+        }
+
+        public override void Dispose()
+        {
+            _ddhpContext.Dispose();
+            base.Dispose();
         }
     }
 }

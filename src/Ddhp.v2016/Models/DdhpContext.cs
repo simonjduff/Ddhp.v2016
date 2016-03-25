@@ -17,7 +17,6 @@ namespace Ddhp.v2016.Models
         }
 
         public DbSet<Player> Players { get; set; } 
-
         public DbSet<Stat> Stats { get; set; }
         public DbSet<Afl.Club> AflClubs { get; set; }
         public DbSet<Ddhp.Club> DdhpClubs { get; set; }
