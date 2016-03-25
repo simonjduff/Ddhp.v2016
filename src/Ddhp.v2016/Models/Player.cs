@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace Ddhp.v2016.Models
 {
@@ -10,6 +11,7 @@ namespace Ddhp.v2016.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string MiddleNames { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Stat> Stats { get; set; }
         public bool Retired { get; set; }
         public virtual Afl.Club CurrentAflClub { get; set; }
