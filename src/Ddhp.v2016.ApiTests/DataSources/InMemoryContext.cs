@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Ddhp.v2016.Models;
 using Ddhp.v2016.Models.Ddhp;
-using Microsoft.AspNet.Mvc.ViewFeatures;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 using Newtonsoft.Json;
@@ -31,9 +30,11 @@ namespace Ddhp.v2016.ApiTests.DataSources
                 var clubs = Task.Run(() => JsonConvert.DeserializeObject<Club[]>(File.ReadAllText(@"Data\clubs.json")));
                 var players = Task.Run(() => JsonConvert.DeserializeObject<Player[]>(File.ReadAllText(@"Data\players.json")));
                 var stats = Task.Run(() => JsonConvert.DeserializeObject<Stat[]>(File.ReadAllText(@"Data\stats.json")));
+                var contracts = Task.Run(() => JsonConvert.DeserializeObject<Contract[]>(File.ReadAllText(@"Data\contracts.json")));
 
                 context.DdhpClubs.AddRange(clubs.Result);
                 context.Players.AddRange(players.Result);
+                context.Contracts.AddRange(contracts.Result);
                 context.Stats.AddRange(stats.Result);
 
                 context.SaveChanges();

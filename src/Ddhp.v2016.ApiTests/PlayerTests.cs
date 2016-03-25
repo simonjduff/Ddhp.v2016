@@ -27,7 +27,7 @@ namespace Ddhp.v2016.ApiTests
         }
 
         [Fact]
-        public async Task GetPlayers()
+        public async void GetPlayers()
         {
             var response = await Client.GetAsync("/api/players");
             response.EnsureSuccessStatusCode();
@@ -48,7 +48,7 @@ namespace Ddhp.v2016.ApiTests
         }
 
         [Fact]
-        public async Task GetPlayerById()
+        public async void GetPlayerById()
         {
             var response = await Client.GetAsync("/api/players/1");
             response.EnsureSuccessStatusCode();
