@@ -11,7 +11,6 @@ namespace Ddhp.v2016.ApiTests
 {
     // This project can output the Class library as a NuGet Package.
     // To enable this option, right-click on the project and select the Properties menu item. In the Build tab select "Produce outputs on build".
-    [Collection("InMemory")]
     public class PlayerTests : InMemoryTestsBase
     {
         private readonly ITestOutputHelper _output;
@@ -25,10 +24,6 @@ namespace Ddhp.v2016.ApiTests
         public PlayerTests(ITestOutputHelper output)
         {
             _output = output;
-
-            _ddhpContext.Players.Add(new Player {Id = 1, FirstName = "First1", LastName = "Second1" });
-            _ddhpContext.Players.Add(new Player { Id = 2, FirstName = "First2", LastName = "Second2" });
-            _ddhpContext.SaveChanges();
         }
 
         [Fact]
@@ -45,11 +40,11 @@ namespace Ddhp.v2016.ApiTests
                 _output.WriteLine($"{result.Id} {result.FirstName} {result.LastName}");
             }
 
-            Assert.Equal(2, results.Count());
+            Assert.Equal(1211, results.Count());
             var player = results.First();
 
-            Assert.Equal("First1", player.FirstName);
-            Assert.Equal("Second1", player.LastName);
+            Assert.Equal("Brent", player.FirstName);
+            Assert.Equal("Moloney", player.LastName);
         }
 
         [Fact]
@@ -60,8 +55,8 @@ namespace Ddhp.v2016.ApiTests
 
             var player = await response.DeserializeJson<Player>();
 
-            Assert.Equal("First1", player.FirstName);
-            Assert.Equal("Second1", player.LastName);
+            Assert.Equal("Brent", player.FirstName);
+            Assert.Equal("Moloney", player.LastName);
         }
 
         public override void Dispose()

@@ -20,11 +20,11 @@ namespace Ddhp.v2016.Models
         public int Tackles { get; set; }
         public int Kicks { get; set; }
         public int Handballs { get; set; }
-        public int GoalAssists { get; set; }
+        public int? GoalAssists { get; set; }
         [SuppressMessage("ReSharper", "InconsistentNaming")]
-        public int Inside50s { get; set; }
-        public int FreesFor { get; set; }
-        public int FreesAgainst { get; set; }
+        public int? Inside50s { get; set; }
+        public int? FreesFor { get; set; }
+        public int? FreesAgainst { get; set; }
         public int AflClubId { get; set; }
         public virtual Afl.Club AflClub { get; set; }
     }
