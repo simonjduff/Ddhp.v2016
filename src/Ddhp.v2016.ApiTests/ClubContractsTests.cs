@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Ddhp.v2016.ApiTests.DataSources;
 using Ddhp.v2016.Models;
 using Microsoft.Extensions.DependencyInjection;

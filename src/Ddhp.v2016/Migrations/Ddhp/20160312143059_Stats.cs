@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.Data.Entity.Migrations;
 
 namespace Ddhp.v2016.Migrations.Ddhp
