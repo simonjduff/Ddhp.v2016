@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ddhp.v2016.Models;
 using Ddhp.v2016.Models.Ddhp;
@@ -24,7 +25,7 @@ namespace Ddhp.v2016.Controllers.Api
             return (from contract in _context.Contracts
                 where
                     contract.FromRoundId <= roundId && contract.ToRoundId >= roundId &&
-                    contract.Club.Name.Equals(clubName)
+                    contract.Club.Name.Equals(clubName, StringComparison.CurrentCultureIgnoreCase)
                 select contract).Include(q => q.Player);
         }
     }

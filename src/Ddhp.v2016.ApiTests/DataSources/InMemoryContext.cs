@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Ddhp.v2016.Models;
 using Ddhp.v2016.Models.Ddhp;
@@ -41,6 +42,15 @@ namespace Ddhp.v2016.ApiTests.DataSources
 
                 DataImported = true;
             }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Contract>().Property(e => e.Id).ValueGeneratedNever();
+            modelBuilder.Entity<Player>().Property(e => e.Id).ValueGeneratedNever();
+            modelBuilder.Entity<Club>().Property(e => e.Id).ValueGeneratedNever();
         }
 
         private static DbContextOptions Options

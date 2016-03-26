@@ -31,11 +31,6 @@ namespace Ddhp.v2016.ApiTests
         {
             var results = (await GetResults<IEnumerable<Player>>("/api/players")).ToList();
 
-            foreach (var result in results)
-            {
-                _output.WriteLine($"{result.Id} {result.FirstName} {result.LastName}");
-            }
-
             Assert.Equal(1211, results.Count());
             var player = results.First();
 
