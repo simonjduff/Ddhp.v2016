@@ -29,11 +29,7 @@ namespace Ddhp.v2016.ApiTests
         [Fact]
         public async void GetPlayers()
         {
-            var response = await Client.GetAsync("/api/players");
-            response.EnsureSuccessStatusCode();
-
-            var resultsAsync = await response.DeserializeJson<IEnumerable<Player>>();
-            var results = resultsAsync.ToList();
+            var results = (await GetResults<IEnumerable<Player>>("/api/players")).ToList();
 
             foreach (var result in results)
             {
@@ -50,10 +46,7 @@ namespace Ddhp.v2016.ApiTests
         [Fact]
         public async void GetPlayerById()
         {
-            var response = await Client.GetAsync("/api/players/1");
-            response.EnsureSuccessStatusCode();
-
-            var player = await response.DeserializeJson<Player>();
+            var player = await GetResults<Player>("/api/players/1");
 
             Assert.Equal("Brent", player.FirstName);
             Assert.Equal("Moloney", player.LastName);

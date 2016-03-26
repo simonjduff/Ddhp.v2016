@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using Ddhp.v2016.ApiTests.DataSources;
 using Ddhp.v2016.Models;
 using Ddhp.v2016.Models.Ddhp;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -28,13 +27,8 @@ namespace Ddhp.v2016.ApiTests
             var teamName = "Cheats";
 
             // When I request Contracts
-            var response = await Client.GetAsync($"/api/contracts/{round}/{teamName}");
-            response.EnsureSuccessStatusCode();
-
-            var resultsAsync = await response.DeserializeJson<IEnumerable<Contract>>();
-            var results = resultsAsync.ToList();
-
-            _output.WriteLine(await response.Content.ReadAsStringAsync());
+            var url = $"/api/contracts/{round}/{teamName}";
+            var results = (await GetResults<List<Contract>>(url)).ToList();
 
             // Then I have 24 contracts
             Assert.Equal(24, results.Count);
