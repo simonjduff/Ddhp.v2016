@@ -1,12 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Ddhp.v2016.ApiTests.DataSources;
-using Ddhp.v2016.Models;
 using Ddhp.v2016.Models.Ddhp;
-using Microsoft.AspNet.TestHost;
-using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
+using Ddhp.v2016.ApiTests.TestContexts;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using Xunit;
@@ -16,45 +11,19 @@ namespace Ddhp.v2016.ApiTests.Steps
     [Binding]
     public class ContractSteps
     {
-        private InMemoryContext _context;
-        private HttpClient _client;
-        private int _roundId;
-        private string _clubName;
+        public ContractSteps(TestContext testContext)
+        {
+            _testContext = testContext;
+        }
+
         private List<Contract> _results;
-
-        [Given(@"the test data from 2012 with in-memory database")]
-        public void LoadTestData()
-        {
-            _context = new InMemoryContext();
-        }
-
-        [Given(@"the in-memory webapi runner")]
-        public void InMemoryWebApi()
-        {
-            var webHostBuilder = TestServer.CreateBuilder()
-                .UseStartup<Startup>()
-                .UseServices(q => q.Add(new ServiceDescriptor(typeof(IDdhpContext), _context)));
-            var server = new TestServer(webHostBuilder);
-            _client = server.CreateClient();
-        }
-
-        [Given(@"the round is (\d{6,6})")]
-        public void SetRound(int roundId)
-        {
-            _roundId = roundId;
-        }
-
-        [Given(@"my club is the (.*)")]
-        public void SetClub(string clubName)
-        {
-            _clubName = clubName;
-        }
+        private readonly TestContext _testContext;
 
         [When(@"I request contracts for the club and round")]
         public void GetContracts()
         {
-            var url = $"/api/contracts/{_roundId}/{_clubName}";
-            _results = GetResults<List<Contract>>(url).Result.ToList();
+            var url = $"/api/contracts/{_testContext.RoundId}/{_testContext.ClubName}";
+            _results = _testContext.GetResults<List<Contract>>(url).Result.ToList();
         }
 
         [Then(@"I have (\d+) contracts returned")]
@@ -76,21 +45,13 @@ namespace Ddhp.v2016.ApiTests.Steps
             }
         }
 
+        // ReSharper disable once ClassNeverInstantiated.Local
         private class ExpectedPlayers
         {
             public string FirstName { get; set; }
             public string LastName { get; set; }
             public int FromRoundId { get; set; }
             public int ToRoundId { get; set; }
-        }
-
-        protected async Task<T> GetResults<T>(string url)
-        {
-            var response = await _client.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-
-            var resultsAsync = await response.DeserializeJson<T>();
-            return resultsAsync;
         }
     }
 }
