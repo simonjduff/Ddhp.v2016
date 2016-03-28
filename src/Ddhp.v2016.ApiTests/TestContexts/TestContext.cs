@@ -1,10 +1,11 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Ddhp.v2016.ApiTests.DataSources;
 
 namespace Ddhp.v2016.ApiTests.TestContexts
 {
-    public class TestContext
+    public class TestContext : IDisposable
     {
         public InMemoryContext DataContext { get; set; }
         public HttpClient Client { get; set; }
@@ -18,6 +19,12 @@ namespace Ddhp.v2016.ApiTests.TestContexts
 
             var resultsAsync = await response.DeserializeJson<T>();
             return resultsAsync;
+        }
+
+        public void Dispose()
+        {
+            DataContext?.Dispose();
+            Client?.Dispose();
         }
     }
 }
