@@ -48,6 +48,8 @@ namespace Ddhp.v2016.ApiTests.DataSources
         {
             base.OnModelCreating(modelBuilder);
 
+            // The test data files contain Id values already, so we'll use those rather than
+            // generated Identity values.
             modelBuilder.Entity<Contract>().Property(e => e.Id).ValueGeneratedNever();
             modelBuilder.Entity<Player>().Property(e => e.Id).ValueGeneratedNever();
             modelBuilder.Entity<Club>().Property(e => e.Id).ValueGeneratedNever();
