@@ -49,6 +49,8 @@ namespace Ddhp.v2016
             //services.AddIdentity<ApplicationUser, IdentityRole>()
             //    .AddEntityFrameworkStores<ApplicationDbContext>()
             //    .AddDefaultTokenProviders();
+
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,7 +90,7 @@ namespace Ddhp.v2016
 
             app.UseStaticFiles();
 
-            app.UseIdentity();
+            //app.UseIdentity();
 
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
 
