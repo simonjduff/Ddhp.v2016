@@ -23,7 +23,7 @@ namespace Ddhp.v2016.ApiTests.Steps
         public void GetContracts()
         {
             var url = $"/api/contracts/{_testContext.RoundId}/{_testContext.ClubName}";
-            _results = _testContext.GetResults<List<Contract>>(url).Result.ToList();
+            _results = _testContext.GetResults<List<Contract>>(url).ToList();
         }
 
         [Then(@"I have (\d+) contracts returned")]

@@ -21,7 +21,7 @@ namespace Ddhp.v2016.ApiTests.Steps
         public void GetIncompleteRound()
         {
             var url = $"/api/rounds/incomplete";
-            _round = _testContext.GetResults<Round>(url).Result;
+            _round = _testContext.GetResults<Round>(url);
         }
 
         [Then(@"the round (\d+) is returned")]
