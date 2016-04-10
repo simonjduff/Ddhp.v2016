@@ -9,9 +9,9 @@ namespace Ddhp.v2016.Controllers.Api
     [Route("api/[controller]")]
     public class RoundsController : Controller
     {
-        private readonly DdhpContext _context;
+        private readonly IDdhpContext _context;
 
-        public RoundsController(DdhpContext context)
+        public RoundsController(IDdhpContext context)
         {
             _context = context;    
         }
@@ -19,7 +19,7 @@ namespace Ddhp.v2016.Controllers.Api
         [Route("incomplete")]
         public async Task<Round> NextIncompleteRound()
         {
-            return await Task.Run(() => _context.Rounds.FirstOrDefault(q => !q.RoundComplete));
+            return await Task.Run(() => _context.Rounds.OrderBy(q => q.Id).FirstOrDefault(q => !q.Complete));
         }
     }
 }

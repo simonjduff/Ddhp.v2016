@@ -8,9 +8,10 @@ using Ddhp.v2016.Models;
 namespace Ddhp.v2016.Migrations.Ddhp
 {
     [DbContext(typeof(DdhpContext))]
-    partial class DdhpContextModelSnapshot : ModelSnapshot
+    [Migration("20160410121357_RoundCompleteRename")]
+    partial class RoundCompleteRename
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")

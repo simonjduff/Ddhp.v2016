@@ -24,7 +24,7 @@ namespace Ddhp.v2016.ApiTests.Steps
             _round = _testContext.GetResults<Round>(url).Result;
         }
 
-        [Then(@"the round \d+ is returned")]
+        [Then(@"the round (\d+) is returned")]
         public void RoundReturned(int roundId)
         {
             Assert.NotNull(_round);

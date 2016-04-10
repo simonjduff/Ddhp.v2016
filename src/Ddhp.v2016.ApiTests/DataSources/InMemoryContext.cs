@@ -32,11 +32,13 @@ namespace Ddhp.v2016.ApiTests.DataSources
                 var players = Task.Run(() => JsonConvert.DeserializeObject<Player[]>(File.ReadAllText(@"Data\players.json")));
                 var stats = Task.Run(() => JsonConvert.DeserializeObject<Stat[]>(File.ReadAllText(@"Data\stats.json")));
                 var contracts = Task.Run(() => JsonConvert.DeserializeObject<Contract[]>(File.ReadAllText(@"Data\contracts.json")));
+                var rounds = Task.Run(() => JsonConvert.DeserializeObject<Round[]>(File.ReadAllText(@"Data/rounds.json")));
 
                 context.DdhpClubs.AddRange(clubs.Result);
                 context.Players.AddRange(players.Result);
                 context.Contracts.AddRange(contracts.Result);
                 context.Stats.AddRange(stats.Result);
+                context.Rounds.AddRange(rounds.Result);
 
                 context.SaveChanges();
 
