@@ -12,12 +12,12 @@ namespace Ddhp.v2016.ApiTests.TestContexts
         public int RoundId { get; set; }
         public string ClubName { get; set; }
 
-        public async Task<T> GetResults<T>(string url)
+        public Task<T> GetResults<T>(string url)
         {
-            var response = await Client.GetAsync(url);
-            response.EnsureSuccessStatusCode();
+            var response = Client.GetAsync(url);
+            response.Result.EnsureSuccessStatusCode();
 
-            var resultsAsync = await response.DeserializeJson<T>();
+            var resultsAsync = response.Result.DeserializeJson<T>();
             return resultsAsync;
         }
 
