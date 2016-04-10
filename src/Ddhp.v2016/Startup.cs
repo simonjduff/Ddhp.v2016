@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Ddhp.v2016.Models;
+using Microsoft.AspNet.StaticFiles;
 
 namespace Ddhp.v2016
 {
@@ -88,6 +89,7 @@ namespace Ddhp.v2016
 
             app.UseApplicationInsightsExceptionTelemetry();
 
+            app.UseDefaultFiles();
             app.UseStaticFiles();
 
             //app.UseIdentity();

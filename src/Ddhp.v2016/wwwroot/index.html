@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Angular 2 with ASP.NET 5</title>
+    <link href="lib/css/bootstrap.css" rel="stylesheet" />
+    <!-- 1. Load libraries -->
+    <script src="lib/es6-shim.min.js"></script>
+    <script src="lib/system-polyfills.js"></script>
+    <script src="lib/shims_for_IE.js"></script>
+    <script src="lib/angular2-polyfills.js"></script>
+    <script src="lib/system.js"></script>
+    <script src="lib/rx.js"></script>
+    <script src="lib/angular2.dev.js"></script>
+    <!-- 2. Configure SystemJS -->
+    <script>
+        System.config({
+            packages: {
+                appScripts: {
+                    defaultExtension: 'js'
+                }
+            }
+        });
+    </script>
+    <script>
+
+        System.import('appScripts/boot')
+              .then(null, console.error.bind(console));
+    </script>
+
+</head>
+<body>
+    <h2>Demo of Angular 2 using ASP.NET 5 with Visual Studio 2015</h2>
+    <ddhp-app>Loading...</ddhp-app>
+</body>
+</html>
