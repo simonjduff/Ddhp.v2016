@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Ddhp.v2016.Models;
 using Ddhp.v2016.Models.Ddhp;
 using Microsoft.AspNet.Mvc;
@@ -20,13 +21,13 @@ namespace Ddhp.v2016.Controllers.Api
 
         [HttpGet]
         [Route("{roundId:int}/{clubName}")]
-        public IEnumerable<Contract> Get(int roundId, string clubName)
+        public async Task<IEnumerable<Contract>> Get(int roundId, string clubName)
         {
-            return (from contract in _context.Contracts
+            return await Task.Run(() => (from contract in _context.Contracts
                 where
                     contract.FromRoundId <= roundId && contract.ToRoundId >= roundId &&
                     contract.Club.Name.Equals(clubName, StringComparison.CurrentCultureIgnoreCase)
-                select contract).Include(q => q.Player);
+                select contract).Include(q => q.Player));
         }
     }
 }

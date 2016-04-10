@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Ddhp.v2016.Models;
 using Microsoft.AspNet.Mvc;
 
@@ -16,16 +17,16 @@ namespace Ddhp.v2016.Controllers.Api
         }
 
         [HttpGet]
-        public IEnumerable<Player> GetAll()
+        public async Task<IEnumerable<Player>> GetAll()
         {
-            return _context.Players.OrderBy(q => q.Id);
+            return await Task.Run(() => _context.Players.OrderBy(q => q.Id));
         }
 
         [HttpGet]
         [Route("{id:int}")]
-        public Player Get(int id)
+        public async Task<Player> Get(int id)
         {
-            return _context.Players.SingleOrDefault(q => q.Id.Equals(id));
+            return await Task.Run(() => _context.Players.SingleOrDefault(q => q.Id.Equals(id)));
         }
     }
 }
