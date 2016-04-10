@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Ddhp.v2016.Models;
@@ -25,8 +26,11 @@ namespace Ddhp.v2016.ApiTests.DataSources
             {
                 if (DataImported)
                 {
+                    Trace.WriteLine("Data load already completed");
                     return;
                 }
+
+                Trace.WriteLine("Starting to load data");
 
                 var clubs = Task.Run(() => JsonConvert.DeserializeObject<Club[]>(File.ReadAllText(@"Data\clubs.json")));
                 var players = Task.Run(() => JsonConvert.DeserializeObject<Player[]>(File.ReadAllText(@"Data\players.json")));
@@ -43,6 +47,8 @@ namespace Ddhp.v2016.ApiTests.DataSources
                 context.SaveChanges();
 
                 DataImported = true;
+
+                Trace.WriteLine("Data load finished");
             }
         }
 
