@@ -17,9 +17,9 @@ namespace Ddhp.v2016.Controllers.Api
         }
 
         [Route("incomplete")]
-        public async Task<Round> NextIncompleteRound()
+        public Round NextIncompleteRound()
         {
-            return await Task.Run(() => _context.Rounds.OrderBy(q => q.Id).FirstOrDefault(q => !q.Complete));
+            return _context.Rounds.OrderBy(q => q.Id).FirstOrDefault(q => !q.Complete);
         }
     }
 }

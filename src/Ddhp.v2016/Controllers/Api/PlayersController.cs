@@ -17,16 +17,16 @@ namespace Ddhp.v2016.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Player>> GetAll()
+        public IEnumerable<Player> GetAll()
         {
-            return await Task.Run(() => _context.Players.OrderBy(q => q.Id));
+            return _context.Players.OrderBy(q => q.Id);
         }
 
         [HttpGet]
         [Route("{id:int}")]
-        public async Task<Player> Get(int id)
+        public Player Get(int id)
         {
-            return await Task.Run(() => _context.Players.SingleOrDefault(q => q.Id.Equals(id)));
+            return _context.Players.SingleOrDefault(q => q.Id.Equals(id));
         }
     }
 }
