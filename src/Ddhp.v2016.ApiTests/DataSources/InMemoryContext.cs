@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Ddhp.v2016.Models;
 using Ddhp.v2016.Models.Ddhp;
@@ -12,26 +10,32 @@ namespace Ddhp.v2016.ApiTests.DataSources
 {
     public sealed class InMemoryContext : DdhpContext
     {
-        public static bool DataImported;
-        private static readonly object ThreadLock = new object();
-
-        public InMemoryContext() : base(Options)
+        static InMemoryContext()
         {
-            SetupData(this);
+            var context = new DdhpContext(DbContextOptions);
+
+            SetupData(context);
+        }
+
+        private static DbContextOptions<DdhpContext> DbContextOptions
+        {
+            get
+            {
+                var optionsBuilder = new DbContextOptionsBuilder<DdhpContext>();
+                optionsBuilder.UseInMemoryDatabase();
+
+                var dbContextOptions = optionsBuilder.Options;
+                return dbContextOptions;
+            }
+        }
+
+        public InMemoryContext() : base(DbContextOptions)
+        {
+            
         }
 
         private static void SetupData(DdhpContext context)
         {
-            lock (ThreadLock)
-            {
-                if (DataImported)
-                {
-                    Trace.WriteLine("Data load already completed");
-                    return;
-                }
-
-                Trace.WriteLine("Starting to load data");
-
                 var clubs = Task.Run(() => JsonConvert.DeserializeObject<Club[]>(File.ReadAllText(@"Data\clubs.json")));
                 var players = Task.Run(() => JsonConvert.DeserializeObject<Player[]>(File.ReadAllText(@"Data\players.json")));
                 var stats = Task.Run(() => JsonConvert.DeserializeObject<Stat[]>(File.ReadAllText(@"Data\stats.json")));
@@ -45,11 +49,6 @@ namespace Ddhp.v2016.ApiTests.DataSources
                 context.Rounds.AddRange(rounds.Result);
 
                 context.SaveChanges();
-
-                DataImported = true;
-
-                Trace.WriteLine("Data load finished");
-            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -61,16 +60,6 @@ namespace Ddhp.v2016.ApiTests.DataSources
             modelBuilder.Entity<Contract>().Property(e => e.Id).ValueGeneratedNever();
             modelBuilder.Entity<Player>().Property(e => e.Id).ValueGeneratedNever();
             modelBuilder.Entity<Club>().Property(e => e.Id).ValueGeneratedNever();
-        }
-
-        private static DbContextOptions Options
-        {
-            get
-            {
-                var optionsBuilder = new DbContextOptionsBuilder<DdhpContext>();
-                optionsBuilder.UseInMemoryDatabase();
-                return optionsBuilder.Options;
-            }
         }
     }
 }
