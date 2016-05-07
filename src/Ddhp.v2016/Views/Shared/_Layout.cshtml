@@ -1,0 +1,25 @@
+﻿@model dynamic
+
+@{
+    Layout = null;
+}
+@addTagHelper "*, Microsoft.AspNet.Mvc.TagHelpers"
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Doctor Douglas Howser Premiership Cup</title>
+        <link href="~/lib/css/bootstrap.css" rel="stylesheet" asp-append-version="true" />
+        <!-- 1. Load libraries -->
+        <script src="~/lib/react.min.js" asp-append-version="true"></script>
+        <script src="~/lib/react-dom.min.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery.min.js" asp-append-version="true"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    </head>
+    <body>
+        <div>
+            @RenderBody()
+        </div>
+    </body>
+</html>
