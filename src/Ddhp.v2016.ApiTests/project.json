@@ -27,6 +27,6 @@
     "specflow-dnx": "SpecFlow.Dnx"
   },
   "scripts": {
-		"prebuild": [ "dnx specflow-dnx" ]
+    "prebuild": [ "dnx specflow-dnx" ]
 	}
 }
