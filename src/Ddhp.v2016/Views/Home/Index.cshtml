@@ -7,4 +7,30 @@
 
 <h2>Home</h2>
 <script type="text/babel">
+    var data = [{id: 1, name:'player'}, {id:2, name:'player2'}];
+    var PlayersTable = React.createClass({
+        render: function(){
+            var rows = this.props.data.map(function (item){
+                return (
+                    <tr key={item.id}>
+                        <td>Item</td>
+                    </tr>
+                                    );
+                });
+            return (
+                <table>
+                    <thead>
+                        <tr>
+                            <th>First</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {rows}
+                    </tbody>
+                </table>
+            );
+        }
+    });
+    ReactDOM.render(<PlayersTable data={data} />, document.getElementById('mainContent'));
+
 </script>

@@ -47,6 +47,7 @@ gulp.task("min", ["min:js", "min:css"]);
 gulp.task('moveToLib', function (done) {
     gulp.src([
       'node_modules/react/dist/react.min.js',
+      'node_modules/react/dist/react.js',
       'node_modules/react-dom/dist/react-dom.min.js',
       'node_modules/jquery/dist/jquery.*js',
       'node_modules/bootstrap/dist/js/bootstrap*.js',
